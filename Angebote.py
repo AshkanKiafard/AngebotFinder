@@ -3,7 +3,7 @@ import requests
 import csv
 from PIL import Image
 
-
+#find and save deals as csv file
 def findeAngebote():
     csv_file=open('Angebote.csv','w',newline="")
     csv_writer=csv.writer(csv_file)
@@ -54,6 +54,7 @@ def findeAngebote():
             discount='-0%'
     csv_file.close()
 
+#find and show matching products
 def findeProdukt(product_to_look_for,show=False):
     if product_to_look_for=='':
         return None
