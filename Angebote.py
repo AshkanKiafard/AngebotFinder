@@ -39,6 +39,7 @@ def findeAngebote():
             product_title=product_title.replace(r',','')
             product_title=product_title.replace(r'"','')
             product_title=product_title.replace(r'­','')
+            product_title=product_title.replace('-',' ')
             price=price.replace(r'*','')
             price=price.replace(r'"','')
             discount=discount.replace(r'*','')
@@ -60,7 +61,7 @@ def findeProdukt(product_to_look_for,show=False):
     with open('Angebote.csv','r') as f:
         f_reader=csv.reader(f)
         for line in f_reader:
-            if product_to_look_for.lower().replace('-',' ') in line[0].lower().replace('-',' '):
+            if product_to_look_for.lower() in line[0].lower():
                 i+=1
                 finded_product=line[0]
                 finded_price=line[1]
@@ -82,4 +83,4 @@ def findeProdukt(product_to_look_for,show=False):
         print('lieder nichts gefunden')
 
 findeAngebote()
-findeProdukt('käse',True)
+findeProdukt('coca cola',True)
