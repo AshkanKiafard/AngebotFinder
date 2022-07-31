@@ -82,4 +82,4 @@ def findeProdukt(product_to_look_for,show=False):
         print('lieder nichts gefunden')
 
 findeAngebote()
-#findeProdukt('käse',True)
+findeProdukt('käse',True)
