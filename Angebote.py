@@ -3,8 +3,8 @@ import requests
 import csv
 from PIL import Image
 
-#find and save deals as csv file
 def findeAngebote():
+    #find and save deals as csv file
     csv_file=open('Angebote.csv','w',newline="")
     csv_writer=csv.writer(csv_file)
     csv_writer.writerow(['Name der Produkt','Preis','Preis vor Rabatt','Rabatt%','Bild','Supermarkt'])
@@ -35,6 +35,7 @@ def findeAngebote():
                     price2=num2
 
             discount=product.find('div',class_='offer-tile__badges badge__container').text
+            #removes extra symbols from the name and price
             product_title=product_title.replace(r'*','')
             product_title=product_title.replace(r',','')
             product_title=product_title.replace(r'"','')
@@ -54,11 +55,13 @@ def findeAngebote():
             discount='-0%'
     csv_file.close()
 
-#find and show matching products
-def findeProdukt(product_to_look_for,show=False):
+
+def findeProdukt(product_to_look_for,show_pic=False,filtprice=0):
+    #find and show matching products
     if product_to_look_for=='':
         return None
     i=0
+    show=True
     with open('Angebote.csv','r') as f:
         f_reader=csv.reader(f)
         for line in f_reader:
@@ -70,18 +73,24 @@ def findeProdukt(product_to_look_for,show=False):
                 finded_discount=line[3]
                 finded_img=line[4]
                 finded_shop=line[5]
-                print(f'{i}) Markt:',finded_shop)
-                print('Produkt:',finded_product)
-                print('Preis:',finded_price,'€')
-                print('Preis vor Rabatt:',f'{finded_price2}€' if finded_price2!='' else 'unbestimmt')
-                print('Info:',finded_discount.strip() if len(finded_discount.strip())>0 else 'keine')
-                print('Bild:',finded_img)
-                print()
+                if float(filtprice)>0:
+                    show=False
+                    if float(finded_price)<=float(filtprice):
+                        show=True
                 if show:
-                    im = Image.open(requests.get(finded_img, stream=True).raw)
-                    im.show()
+                    print(f'{i}) Markt:',finded_shop)
+                    print('Produkt:',finded_product)
+                    print('Preis:',finded_price,'€')
+                    print('Preis vor Rabatt:',f'{finded_price2}€' if finded_price2!='' else 'unbestimmt')
+                    print('Info:',finded_discount.strip() if len(finded_discount.strip())>0 else 'keine')
+                    print('Bild:',finded_img)
+                    print()
+                    if show_pic:
+                        im = Image.open(requests.get(finded_img, stream=True).raw)
+                        im.show()
     if i==0:
         print('lieder nichts gefunden')
 
+
 findeAngebote()
-findeProdukt('coca cola',True)
+findeProdukt('käse',True,2)
