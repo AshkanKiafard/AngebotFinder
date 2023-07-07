@@ -12,7 +12,6 @@ def findeAngebote():
     soup=BeautifulSoup(source,'lxml')
     for product in soup.find_all('li',class_=['tile-list__item','tile-list__item--highlight']):
         try:
-
             product_image_code=product.find('div',class_='offer-tile__image-container')
             product_image=product_image_code.find('img')['src']
             product_title=product.find('a',class_='tile__link--cover ellipsis').text
@@ -49,7 +48,6 @@ def findeAngebote():
             product_image=product_image.replace(r'"','')
             if product_title[0]==' ':
                 product_title=product_title[1:]
-
             csv_writer.writerow([product_title,price,price2,discount,product_image,'Penny'])
         except Exception as a:
             discount='-0%'
